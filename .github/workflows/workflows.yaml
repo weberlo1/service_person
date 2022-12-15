@@ -1,0 +1,37 @@
+name: PostgreSQL Test
+
+on: [push]
+
+jobs:
+  postgres-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up PostgreSQL
+      uses: docker://postgres:latest
+      with:
+        postgres-version: 14.x
+        service-name: postgres
+        username: postgres
+        password: postgres
+        env:
+          POSTGRES_DB: test_db
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Add Person
+      run: cd code_add_person
+    - name: Install dependencies
+      run: npm install
+    - name: Set environment variable
+      run: echo "TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
+    - name: Enable uuid_generate_v4 extension
+      run: |
+        psql -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" -d test_db
+    - name: Load SQL script
+      run: |
+        psql -h localhost -p 5432 -U postgres -d test_db -a -f sql/person.sql
+    - name: Run tests
+      run: npm test
