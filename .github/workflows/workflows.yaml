@@ -25,10 +25,8 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v3
 
-    - name: Add Person
-      run: cd code_add_person
-
     - name: Install dependencies
+      working-directory: ./code_add_person
       run: npm install
 
     # - name: Set environment variable
@@ -47,4 +45,5 @@ jobs:
     #   run: |
     #     PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -f sql/person.sql
     - name: Run tests
+      working-directory: ./code_add_person
       run: npx jest
