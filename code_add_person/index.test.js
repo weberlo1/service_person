@@ -5,7 +5,7 @@ describe('lambda function', () => {
   test('should insert a new source and return it', async () => {
 
     process.env.RDS_USER = 'postgres'
-    process.env.RDS_HOSTNAME = 'postgres'
+    process.env.RDS_HOSTNAME = 'localhost'
     process.env.RDS_DB = 'test_db'
     process.env.RDS_PW = 'postgres'
     process.env.RDS_PORT = 5432
