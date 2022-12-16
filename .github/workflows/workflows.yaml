@@ -31,8 +31,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Set environment variable
-      run: echo "TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
+    # - name: Set environment variable
+    #   run: echo "TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
 
     - name: Setup PG cli
       run: |
@@ -43,8 +43,8 @@ jobs:
       run: |
         PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -c 'CREATE EXTENSION "uuid-ossp";'
 
-    - name: Load SQL script
-      run: |
-        PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -f sql/person.sql
+    # - name: Load SQL script
+    #   run: |
+    #     PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -f sql/person.sql
     - name: Run tests
-      run: npm test
+      run: npx jest
