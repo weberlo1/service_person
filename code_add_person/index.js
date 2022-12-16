@@ -10,8 +10,6 @@ const pool = new Pool({
 
 exports.handler = async (request, context, callback) => {
 
-  console.log(process.env)
-
   const client = await pool.connect()
   const { input } = request.arguments
 
