@@ -41,10 +41,10 @@ jobs:
       
     - name: Enable uuid-ossp extension
       run: |
-        PGPASSWORD=postgres psql -U postgres -h postgres -c -d test_db 'CREATE EXTENSION "uuid-ossp";'
+        PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -c 'CREATE EXTENSION "uuid-ossp";'
 
     - name: Load SQL script
       run: |
-        PGPASSWORD=postgres psql -U postgres -h postgres -c -d test_db -a -f sql/person.sql
+        PGPASSWORD=postgres psql -U postgres -h postgres -d test_db -f sql/person.sql
     - name: Run tests
       run: npm test
