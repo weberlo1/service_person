@@ -10,13 +10,7 @@ exports.handler = async (request, context, callback) => {
     port: process.env.RDS_PORT,
   })
 
-  console.log({
-    user: process.env.RDS_USER,
-    host: process.env.RDS_HOSTNAME,
-    database: process.env.RDS_DB,
-    password: process.env.RDS_PW,
-    port: process.env.RDS_PORT,
-  })
+  console.log(process.env)
 
   const client = await pool.connect()
   const { input } = request.arguments
