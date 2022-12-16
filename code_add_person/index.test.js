@@ -8,7 +8,7 @@ describe('lambda function', () => {
     process.env.RDS_HOSTNAME = 'postgres'
     process.env.RDS_DB = 'test_db'
     process.env.RDS_PW = 'postgres'
-    process.env.RDS_PORT = '5432'
+    process.env.RDS_PORT = 5432
 
     const request = {
       arguments: {
