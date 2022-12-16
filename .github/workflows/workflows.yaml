@@ -38,14 +38,14 @@ jobs:
     # - name: Set environment variable
     #   run: echo "TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
 
-    - name: Setup PG cli
-      run: |
-        apt-get update
-        apt-get install --yes --no-install-recommends postgresql-client
+    # - name: Setup PG cli
+    #   run: |
+    #     apt-get update
+    #     apt-get install --yes --no-install-recommends postgresql-client
       
-    - name: Enable uuid-ossp extension
-      run: |
-        PGPASSWORD=postgres psql -U postgres -h 127.0.0.1 -d test_db -c 'CREATE EXTENSION "uuid-ossp";'
+    # - name: Enable uuid-ossp extension
+    #   run: |
+    #     PGPASSWORD=postgres psql -U postgres -h 127.0.0.1 -d test_db -c 'CREATE EXTENSION "uuid-ossp";'
 
     # - name: Load SQL script
     #   run: |
