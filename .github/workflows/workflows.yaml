@@ -6,17 +6,18 @@ jobs:
   postgres-test:
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up PostgreSQL
-      uses: docker://postgres:latest
-      with:
-        postgres-version: 14.x
-        service-name: postgres
-        username: postgres
-        password: postgres
+    services:
+      postgres:
+        image: postgres:latest
         env:
           POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v2
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
