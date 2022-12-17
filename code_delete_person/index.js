@@ -19,7 +19,7 @@ exports.handler = async (request, context, callback) => {
       USING persons
       INNER JOIN visitors ON persons.id = visitors.person_id
       WHERE persons.id = $1 AND persons.workspace_id = $2
-      RETURNING id, workspace_id   
+      RETURNING id, workspace_id;
   `,
       [input.id, input.workspace_id]
     )
@@ -37,9 +37,11 @@ exports.handler = async (request, context, callback) => {
       })
     }
   } catch (e) {
+    console.error(e)
+
     callback(e, {
-      status: 'ERROR',
-      message: 'Something went wrong!!',
+      code: 500,
+      message: 'internal server error',
     })
   } finally {
     client.release()
