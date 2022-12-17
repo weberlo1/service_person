@@ -12,3 +12,18 @@ jobs:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
       pathname: ./code_delete_person
+
+  test-find-person:
+    uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
+    with:
+      pathname: ./code_find_person
+
+  test-get-person:
+    uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
+    with:
+      pathname: ./code_get_person
+
+  test-list-person:
+    uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
+    with:
+      pathname: ./code_list_person

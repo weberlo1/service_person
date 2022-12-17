@@ -34,8 +34,8 @@ exports.handler = async (request, context, callback) => {
     console.error(e)
 
     callback(e, {
-      status: 'ERROR',
-      message: 'Something went wrong!!',
+      code: 500,
+      message: 'internal server error',
     })
   } finally {
     client.release()
