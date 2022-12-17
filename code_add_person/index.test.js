@@ -20,7 +20,7 @@ describe('lambda function', () => {
           email: 'john.doe@example.com',
           country_code: 'US',
           phone: '+1 555 555 5555',
-          lifetime_value: '1000',
+          lifetime_value: 1000,
           stage: 'lead',
         },
       },

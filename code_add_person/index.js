@@ -51,6 +51,8 @@ exports.handler = async (request, context, callback) => {
     })
 
   } catch (e) {
+    console.error(e)
+    
     callback(e, {
       status: 'ERROR',
       message: 'Something went wrong!!'
