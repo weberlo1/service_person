@@ -15,9 +15,6 @@ exports.handler = async (request, context, callback) => {
   try {
     const response = await client.query(
       `
-      WITH deleted_visitors AS (
-        DELETE FROM visitors WHERE person_id = $1 AND workspace_id = $2
-      )
       DELETE FROM persons WHERE id = $1 AND workspace_id = $2      
       RETURNING id, workspace_id;
   `,

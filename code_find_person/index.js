@@ -1,14 +1,14 @@
 const { Pool } = require('pg')
 
-const pool = new Pool({
-  user: process.env.RDS_USER,
-  host: process.env.RDS_HOSTNAME,
-  database: process.env.RDS_DB,
-  password: process.env.RDS_PW,
-  port: process.env.RDS_PORT,
-})
-
 exports.handler = async (request, context, callback) => {
+  const pool = new Pool({
+    user: process.env.RDS_USER,
+    host: process.env.RDS_HOSTNAME,
+    database: process.env.RDS_DB,
+    password: process.env.RDS_PW,
+    port: process.env.RDS_PORT,
+  })
+  
   const client = await pool.connect()
   const { input } = request.arguments
   const values = []
