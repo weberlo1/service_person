@@ -36,10 +36,10 @@ exports.handler = async (request, context, callback) => {
         first_name = $2,
         last_name = $3,
         name = $4,
-        country_code = $5,
-        phone = $6,
-        lifetime_value = $7,
-        stage = $8
+        country_code = $6,
+        phone = $7,
+        lifetime_value = $8,
+        stage = $9
       RETURNING *,
       CASE
         WHEN EXCLUDED.id IS NOT NULL THEN 'CREATED'
