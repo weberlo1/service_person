@@ -27,10 +27,17 @@ describe('lambda function', () => {
     }
     const context = {}
 
-    // Wrap the code in an anonymous function and pass it to the 'handler()' function
     const callback = (err, res) => {
-      // expect(res.data).toEqual({ data: {  } })
-      console.log(res)
+      expect(uuid.validate(res.data.id)).toBeTruthy()
+      expect(uuid.validate(res.data.workspace_id)).toBeTruthy()
+      expect(res.data.first_name).toEqual('John')
+      expect(res.data.last_name).toEqual('Doe')
+      expect(res.data.name).toEqual('John Doe')
+      expect(res.data.email).toEqual('john.doe@example.com')
+      expect(res.data.country_code).toEqual('US')
+      expect(res.data.phone).toEqual('+1 555 555 5555')
+      expect(res.data.lifetime_value).toEqual(1000)
+      expect(res.data.stage).toEqual('lead')
     }
 
     await handler(request, context, callback)
