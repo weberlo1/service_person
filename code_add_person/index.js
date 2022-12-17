@@ -15,7 +15,7 @@ exports.handler = async (request, context, callback) => {
 
   try {
     const res = await client.query(`
-      INSERT INTO persons p
+      INSERT INTO persons
         (
           workspace_id,
           first_name,
