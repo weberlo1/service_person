@@ -46,7 +46,7 @@ exports.handler = async (request, context, callback) => {
 
     callback(null, {
       code: 200,
-      message: 'person added'
+      message: 'person added',
       data: res.rows[0]
     })
 

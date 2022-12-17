@@ -60,7 +60,7 @@ describe('lambda function', () => {
 
     const callback = (err, res) => {
       expect(res.code).toEqual(400)
-      expect(res.message).toEqual(`Person with email john.doe@example.com already exists`)
+      expect(res.message).toEqual(`person with email john.doe@example.com already exists`)
     }
 
     await handler(request, context, callback)
@@ -79,7 +79,7 @@ describe('lambda function', () => {
 
     const callback = (err, res) => {
       expect(res.code).toEqual(400)
-      expect(res.message).toEqual(`Person with email john.doe@example.com already exists`)
+      expect(res.message).toEqual(`person with email john.doe@example.com already exists`)
     }
 
     await handler(request, context, callback)
