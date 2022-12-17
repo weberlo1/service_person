@@ -1,6 +1,6 @@
 const { handler } = require('./index')
 const { Pool } = require('pg')
-const { uuidv4 } = require('uuid')
+const { uuid } = require('uuidv4')
 
 describe('lambda function', () => {
   process.env.RDS_USER = 'postgres'
@@ -13,7 +13,7 @@ describe('lambda function', () => {
     const request = {
       arguments: {
         input: {
-          workspace_id: uuidv4(),
+          workspace_id: uuid(),
           first_name: 'John',
           last_name: 'Doe',
           name: 'John Doe',
