@@ -1,6 +1,6 @@
 CREATE TABLE person (
   id              UUID DEFAULT uuid_generate_v4(),
-  workspace_id    INTEGER,
+  workspace_id    UUID,
   first_name      VARCHAR(255),
   last_name       VARCHAR(255),
   name            VARCHAR(255),
