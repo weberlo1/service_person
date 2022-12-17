@@ -17,7 +17,7 @@ VALUES (
     'Doe',
     'John Doe',
     'john.doe@example.com',
-    '1',
+    'US',
     '1234567890',
     1000,
     'lead'

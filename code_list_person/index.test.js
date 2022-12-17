@@ -106,7 +106,7 @@ describe('lambda function', () => {
         input: {
           id: '52345678-1234-1234-1234-123456789abc',
           workspace_id: '28765432-1234-1234-1234-123456789abc',
-          limit: 2,
+          limit: 4,
           offset: 5
         },
       },
