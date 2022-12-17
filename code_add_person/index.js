@@ -42,7 +42,7 @@ exports.handler = async (request, context, callback) => {
         stage = $9
       RETURNING *,
       CASE
-        WHEN EXCLUDED.id IS NOT NULL THEN 'CREATED'
+        WHEN TG_OP = 'INSERT' THEN 'CREATED'
         ELSE 'UPDATED'
       END AS status;
     `, [
