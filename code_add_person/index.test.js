@@ -1,6 +1,6 @@
 const { handler } = require('./index')
 const { Pool } = require('pg')
-const { v4: uuid_v4 } = require('uuid')
+const { v4: uuid_v4, validate: uuidValidate } = require('uuid')
 
 describe('lambda function', () => {
   process.env.RDS_USER = 'postgres'
@@ -28,8 +28,8 @@ describe('lambda function', () => {
     const context = {}
 
     const callback = (err, res) => {
-      expect(uuid.validate(res.data.id)).toBeTruthy()
-      expect(uuid.validate(res.data.workspace_id)).toBeTruthy()
+      expect(uuidValidate(res.data.id)).toBeTruthy()
+      expect(uuidValidate(res.data.workspace_id)).toBeTruthy()
       expect(res.data.first_name).toEqual('John')
       expect(res.data.last_name).toEqual('Doe')
       expect(res.data.name).toEqual('John Doe')
