@@ -10,7 +10,9 @@ CREATE TABLE persons (
   lifetime_value  FLOAT,
   stage           VARCHAR(255),
   created_at      TIMESTAMP DEFAULT now(),
-  updated_at      TIMESTAMP DEFAULT now()
+  updated_at      TIMESTAMP DEFAULT now(),
+  CONSTRAINT unique_phone_workspace_id UNIQUE (phone, workspace_id),
+  CONSTRAINT unique_email_workspace_id UNIQUE (email, workspace_id)
 );
 
 -- INSERT INTO person (first_name, last_name, name, email, country_code, phone, lifetime_value, stage)

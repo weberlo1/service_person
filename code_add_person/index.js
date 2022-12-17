@@ -31,7 +31,8 @@ exports.handler = async (request, context, callback) => {
         (
           $1, $2, $3, $4, $5, $6, $7, $8, $9
         )
-      ON CONFLICT (workspace_id, email, phone) DO NOTHING
+      ON CONFLICT ON CONSTRAINT unique_phone_workspace_id, unique_email_workspace_id
+      DO UPDATE SET id = persons.id
       RETURNING *;
     `, [
       input.workspace_id,
@@ -51,7 +52,7 @@ exports.handler = async (request, context, callback) => {
 
   } catch (e) {
     console.error(e)
-
+    
     callback(e, {
       status: 'ERROR',
       message: 'Something went wrong!!'
