@@ -10,8 +10,8 @@ CREATE TABLE person (
   lifetime_value  FLOAT,
   stage           VARCHAR(255),
   created_at      TIMESTAMP DEFAULT now(),
-  updated_at      TIMESTAMP DEFAULT now(),
+  updated_at      TIMESTAMP DEFAULT now()
 );
 
-INSERT INTO person (workspace_id, first_name, last_name, name, email, country_code, phone, lifetime_value, stage, created_at, updated_at)
-VALUES (1, 'John', 'Doe', 'John Doe', 'john.doe@example.com', '1', '1234567890', 100.0, 'new', NOW(), NOW());
+-- INSERT INTO person (first_name, last_name, name, email, country_code, phone, lifetime_value, stage)
+-- VALUES ('John', 'Doe', 'John Doe', 'john.doe@example.com', '1', '1234567890', 100.0, 'new');
