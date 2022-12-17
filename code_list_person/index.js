@@ -19,8 +19,8 @@ exports.handler = async (request, context, callback) => {
   const MAX_OFFSET = 1000
 
   // Use provided values for LIMIT and OFFSET, or use default values
-  const limit = input.limit || DEFAULT_LIMIT
-  const offset = input.offset || DEFAULT_OFFSET
+  let limit = input.limit || DEFAULT_LIMIT
+  let offset = input.offset || DEFAULT_OFFSET
 
   // Limit and offset values cannot exceed maximum values
   limit = Math.min(limit, MAX_LIMIT)
