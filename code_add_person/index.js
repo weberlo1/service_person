@@ -40,7 +40,11 @@ exports.handler = async (request, context, callback) => {
         phone = $6,
         lifetime_value = $7,
         stage = $8
-      RETURNING *;
+      RETURNING *,
+      CASE
+        WHEN EXCLUDED.id IS NOT NULL THEN 'CREATED'
+        ELSE 'UPDATED'
+      END AS status;
     `, [
       input.workspace_id,
       input.first_name,
