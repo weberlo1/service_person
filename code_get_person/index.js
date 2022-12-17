@@ -14,7 +14,7 @@ exports.handler = async (request, context, callback) => {
 
   try {
     const res = await pool.query(
-      'SELECT * FROM people WHERE id = $1 AND workspace_id = $2',
+      'SELECT * FROM persons WHERE id = $1 AND workspace_id = $2',
       [input.id, input.workspace_id]
     )
 
