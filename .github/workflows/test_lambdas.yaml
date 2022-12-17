@@ -4,6 +4,6 @@ on: [push]
 
 jobs:
   call-workflow:
-    uses: weberlo1/reusable_workflows/.github/workflows/test-sql.yaml@dev
+    uses: weberlo1/reusable_workflows/.github/workflows/test-sql.yaml
     with:
       pathname: ./code_add_person
