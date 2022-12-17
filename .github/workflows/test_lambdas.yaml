@@ -3,7 +3,12 @@ name: Test Lambdas
 on: [push]
 
 jobs:
-  call-workflow:
+  test-add-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
       pathname: ./code_add_person
+  
+  test-delete-person:
+    uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
+    with:
+      pathname: ./code_delete_person
