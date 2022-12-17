@@ -22,6 +22,8 @@ CREATE TABLE visitors (
   ip_address    VARCHAR(255),
   country_code  VARCHAR(255),
   device        VARCHAR(255),
+  created_at      TIMESTAMP DEFAULT now(),
+  updated_at      TIMESTAMP DEFAULT now(),
   workspace_id  UUID
 );
 

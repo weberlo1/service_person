@@ -20,7 +20,7 @@ describe('lambda function', () => {
     const context = {}
 
     const callback = (err, res) => {
-      expect(res.code).toEqual(400)
+      expect(res.code).toEqual(404)
       expect(res.message).toEqual('person not found')
     }
 
