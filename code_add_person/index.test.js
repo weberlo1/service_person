@@ -9,11 +9,13 @@ describe('lambda function', () => {
   process.env.RDS_PW = 'pg_test'
   process.env.RDS_PORT = 5432
 
-  test('add person', async () => {
+  const workspace_id = uuid_v4()
+
+  test('Add person', async () => {
     const request = {
       arguments: {
         input: {
-          workspace_id: uuid_v4(),
+          workspace_id,
           first_name: 'John',
           last_name: 'Doe',
           name: 'John Doe',
@@ -28,6 +30,8 @@ describe('lambda function', () => {
     const context = {}
 
     const callback = (err, res) => {
+      expect(res.code).toEqual(200)
+      expect(res.message).toEqual('person added')
       expect(uuidValidate(res.data.id)).toBeTruthy()
       expect(uuidValidate(res.data.workspace_id)).toBeTruthy()
       expect(res.data.first_name).toEqual('John')
@@ -38,6 +42,44 @@ describe('lambda function', () => {
       expect(res.data.phone).toEqual('+1 555 555 5555')
       expect(res.data.lifetime_value).toEqual(1000)
       expect(res.data.stage).toEqual('lead')
+    }
+
+    await handler(request, context, callback)
+  })
+
+  test('Person with email already exists', async () => {
+    const request = {
+      arguments: {
+        input: {
+          workspace_id,
+          email: 'john.doe@example.com'
+        },
+      },
+    }
+    const context = {}
+
+    const callback = (err, res) => {
+      expect(res.code).toEqual(400)
+      expect(res.message).toEqual(`Person with email john.doe@example.com already exists`)
+    }
+
+    await handler(request, context, callback)
+  })
+
+  test('Person with phone number already exists', async () => {
+    const request = {
+      arguments: {
+        input: {
+          workspace_id,
+          phone: '+1 555 555 5555'
+        },
+      },
+    }
+    const context = {}
+
+    const callback = (err, res) => {
+      expect(res.code).toEqual(400)
+      expect(res.message).toEqual(`Person with email john.doe@example.com already exists`)
     }
 
     await handler(request, context, callback)

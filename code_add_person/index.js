@@ -45,25 +45,27 @@ exports.handler = async (request, context, callback) => {
     ])
 
     callback(null, {
+      code: 200,
+      message: 'person added'
       data: res.rows[0]
     })
 
   } catch (e) {
     if (e.code === '23505' && e.message.includes('unique_email_workspace_id'))
       callback(e, {
-        status: 'ERROR',
-        message: `Person with email ${input.email} already exists`
+        code: 400,
+        message: `person with email ${input.email} already exists`
       })
     else if (e.code === '23505' && e.message.includes('unique_phone_workspace_id'))
       callback(e, {
-        status: 'ERROR',
-        message: `Person with phone number ${input.phone} already exists`
+        code: 400,
+        message: `person with phone number ${input.phone} already exists`
       })
     else {
       console.error(e)
       callback(e, {
-        status: 'ERROR',
-        message: 'Something went wrong!!'
+        code: 500,
+        message: 'server error'
       })
     }
   } finally {
