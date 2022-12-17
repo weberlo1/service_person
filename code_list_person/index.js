@@ -28,7 +28,7 @@ exports.handler = async (request, context, callback) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM people WHERE workspace_id = $1 LIMIT $2 OFFSET $3 ORDER BY updated_at DESC',
+      'SELECT * FROM persons WHERE workspace_id = $1 ORDER BY updated_at DESC LIMIT $2 OFFSET $3',
       [input.workspace_id, limit, offset]
     )
 
@@ -37,9 +37,8 @@ exports.handler = async (request, context, callback) => {
       message: 'person list',
       limit,
       offset,
-      data: result.rows
+      data: result.rows,
     })
-
   } catch (e) {
     console.error(e)
 
@@ -47,7 +46,6 @@ exports.handler = async (request, context, callback) => {
       code: 500,
       message: 'internal server error',
     })
-
   } finally {
     client.release()
   }
