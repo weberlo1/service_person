@@ -1,4 +1,4 @@
-CREATE TABLE person (
+CREATE TABLE persons (
   id              UUID DEFAULT uuid_generate_v4(),
   workspace_id    UUID,
   first_name      VARCHAR(255),
