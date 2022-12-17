@@ -13,7 +13,7 @@ exports.handler = async (request, context, callback) => {
   const { input } = request.arguments
 
   try {
-    const response = await client.query(
+    const res = await client.query(
       `
       DELETE FROM persons WHERE id = $1 AND workspace_id = $2      
       RETURNING id, workspace_id;
