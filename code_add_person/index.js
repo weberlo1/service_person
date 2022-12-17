@@ -15,7 +15,7 @@ exports.handler = async (request, context, callback) => {
 
   try {
     const res = await client.query(`
-      INSERT INTO persons
+      INSERT INTO persons p
         (
           workspace_id,
           first_name,
@@ -31,8 +31,15 @@ exports.handler = async (request, context, callback) => {
         (
           $1, $2, $3, $4, $5, $6, $7, $8, $9
         )
-      ON CONFLICT ON CONSTRAINT unique_phone_workspace_id, unique_email_workspace_id
-      DO UPDATE SET id = persons.id
+      ON CONFLICT ON CONSTRAINT unique_email_workspace_id
+      DO UPDATE SET
+        first_name = $2,
+        last_name = $3,
+        name = $4,
+        country_code = $5,
+        phone = $6,
+        lifetime_value = $7,
+        stage = $8
       RETURNING *;
     `, [
       input.workspace_id,

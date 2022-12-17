@@ -11,7 +11,6 @@ CREATE TABLE persons (
   stage           VARCHAR(255),
   created_at      TIMESTAMP DEFAULT now(),
   updated_at      TIMESTAMP DEFAULT now(),
-  CONSTRAINT unique_phone_workspace_id UNIQUE (phone, workspace_id),
   CONSTRAINT unique_email_workspace_id UNIQUE (email, workspace_id)
 );
 
