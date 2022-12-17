@@ -31,20 +31,7 @@ exports.handler = async (request, context, callback) => {
         (
           $1, $2, $3, $4, $5, $6, $7, $8, $9
         )
-      ON CONFLICT ON CONSTRAINT unique_email_workspace_id
-      DO UPDATE SET
-        first_name = $2,
-        last_name = $3,
-        name = $4,
-        country_code = $6,
-        phone = $7,
-        lifetime_value = $8,
-        stage = $9
-      RETURNING *,
-      CASE
-        WHEN TG_OP = 'INSERT' THEN 'CREATED'
-        ELSE 'UPDATED'
-      END AS status;
+      RETURNING *;
     `, [
       input.workspace_id,
       input.first_name,
@@ -62,13 +49,23 @@ exports.handler = async (request, context, callback) => {
     })
 
   } catch (e) {
-    console.error(e)
-    
-    callback(e, {
-      status: 'ERROR',
-      message: 'Something went wrong!!'
-    })
-
+    if (e.code === '23505' && e.message.includes('unique_email_workspace_id'))
+      callback(e, {
+        status: 'ERROR',
+        message: `Person with email ${input.email} already exists`
+      })
+    else if (e.code === '23505' && e.message.includes('unique_phone_workspace_id'))
+      callback(e, {
+        status: 'ERROR',
+        message: `Person with phone number ${input.phone} already exists`
+      })
+    else {
+      console.error(e)
+      callback(e, {
+        status: 'ERROR',
+        message: 'Something went wrong!!'
+      })
+    }
   } finally {
     client.release()
   }
