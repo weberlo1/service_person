@@ -18,7 +18,7 @@ VALUES (
     'John Doe',
     'john.doe@example.com',
     'US',
-    '1234567890',
+    '+1 555 555 5555',
     1000,
     'lead'
 );
