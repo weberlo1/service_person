@@ -1,34 +1,14 @@
 const { handler } = require('./index')
 const { Pool } = require('pg')
 
-process.env.RDS_USER = 'postgres'
-process.env.RDS_HOSTNAME = '127.0.0.1'
-process.env.RDS_DB = 'test_db'
-process.env.RDS_PW = 'pg_test'
-process.env.RDS_PORT = 5432
-
 describe('lambda function', () => {
-
-  let pool
-
-  beforeAll(() => {
-        pool = new Pool({
-            user: process.env.RDS_USER,
-            host: process.env.RDS_HOSTNAME,
-            database: process.env.RDS_DB,
-            password: process.env.RDS_PW,
-            port: process.env.RDS_PORT,
-        })
-    })
-
-    afterAll(async () => {
-        await pool.end()
-    })
+  process.env.RDS_USER = 'postgres'
+  process.env.RDS_HOSTNAME = '127.0.0.1'
+  process.env.RDS_DB = 'test_db'
+  process.env.RDS_PW = 'pg_test'
+  process.env.RDS_PORT = 5432
 
   test('should insert a new source and return it', async () => {
-
-
-
     const request = {
       arguments: {
         input: {
@@ -44,7 +24,7 @@ describe('lambda function', () => {
       },
     }
     const context = {}
-    
+
     // Wrap the code in an anonymous function and pass it to the 'handler()' function
     const callback = (err, res) => {
       // expect(res.data).toEqual({ data: {  } })
@@ -54,4 +34,3 @@ describe('lambda function', () => {
     await handler(request, context, callback)
   })
 })
-  
