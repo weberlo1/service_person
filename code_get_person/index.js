@@ -27,7 +27,7 @@ exports.handler = async (request, context, callback) => {
       callback(null, {
         code: 200,
         message: 'person found',
-        data: result.rows[0],
+        data: res.rows[0],
       })
     }
   } catch (e) {
