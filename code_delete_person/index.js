@@ -15,10 +15,10 @@ exports.handler = async (request, context, callback) => {
   try {
     const response = await client.query(
       `
-      DELETE FROM persons, visitors
-      USING persons
-      INNER JOIN visitors ON persons.id = visitors.person_id
-      WHERE persons.id = $1 AND persons.workspace_id = $2
+      WITH deleted_visitors AS (
+        DELETE FROM visitors WHERE person_id = $1 AND workspace_id = $2
+      )
+      DELETE FROM persons WHERE id = $1 AND workspace_id = $2      
       RETURNING id, workspace_id;
   `,
       [input.id, input.workspace_id]
