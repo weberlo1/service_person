@@ -7,7 +7,7 @@ CREATE TABLE persons (
   email           VARCHAR(255),
   country_code    VARCHAR(255),
   phone           VARCHAR(255),
-  lifetime_value  FLOAT,
+  lifetime_value  INTEGER,
   stage           VARCHAR(255),
   created_at      TIMESTAMP DEFAULT now(),
   updated_at      TIMESTAMP DEFAULT now(),
