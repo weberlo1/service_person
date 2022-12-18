@@ -23,21 +23,21 @@ exports.handler = async (request, context, callback) => {
           AND id IN (
             SELECT person_id FROM visitors
             WHERE visitor_id = $2 AND workspace_id = $1
-          )
+          );
         `
         values.push(input.visitor_id)
         break
       case input.email:
         query = `
           SELECT * FROM persons
-          WHERE workspace_id = $1 AND email = $2
+          WHERE workspace_id = $1 AND email = $2;
         `
         values.push(input.email)
         break
       case input.phone:
         query = `
           SELECT * FROM persons
-          WHERE workspace_id = $1 AND phone = $2
+          WHERE workspace_id = $1 AND phone = $2;
         `
         values.push(input.phone)
         break
@@ -49,7 +49,7 @@ exports.handler = async (request, context, callback) => {
           AND id IN (
             SELECT person_id FROM visitors
             WHERE ip_address = $3 AND workspace_id = $1
-          )
+          );
         `
         values.push(input.name, input.ip_address)
         break
@@ -62,7 +62,7 @@ exports.handler = async (request, context, callback) => {
           AND id IN (
             SELECT person_id FROM visitors
             WHERE ip_address = $4 AND workspace_id = $1
-          )
+          );
         `
         values.push(input.first_name, input.last_name, input.ip_address)
         break
@@ -92,6 +92,8 @@ exports.handler = async (request, context, callback) => {
       })
     }
   } catch (e) {
+    console.log(e)
+
     callback(e, {
       code: 500,
       message: 'internal server error',
