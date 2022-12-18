@@ -1,5 +1,5 @@
 CREATE TABLE persons (
-  id              UUID DEFAULT uuid_generate_v4(),
+  id              UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   workspace_id    UUID,
   first_name      VARCHAR(255),
   last_name       VARCHAR(255),
@@ -16,7 +16,7 @@ CREATE TABLE persons (
 );
 
 CREATE TABLE visitors (
-  id            UUID DEFAULT uuid_generate_v4(),
+  id            UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   person_id     UUID REFERENCES persons(id) ON DELETE CASCADE,
   user_agent    VARCHAR(255),
   ip_address    VARCHAR(255),
