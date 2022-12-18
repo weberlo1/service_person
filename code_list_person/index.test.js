@@ -36,8 +36,8 @@ describe('lambda function', () => {
         phone: '1234567890',
         lifetime_value: 1000,
         stage: 'lead',
-        updated_at: new Date('2022-12-17T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-17T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[1]).toEqual({
         id: 'f0f1ddbc-50ee-457b-85a9-d816e1ba7d7e',
@@ -50,8 +50,8 @@ describe('lambda function', () => {
         phone: '1234567891',
         lifetime_value: 2000,
         stage: 'customer',
-        updated_at: new Date('2022-12-16T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-16T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[2]).toEqual({
         id: '15ca844e-7241-4e00-b1a7-7a546dcff574',
@@ -64,8 +64,8 @@ describe('lambda function', () => {
         phone: '1234567892',
         lifetime_value: 3000,
         stage: 'lead',
-        updated_at: new Date('2022-12-15T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-15T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[3]).toEqual({
         id: '3a6be760-0623-493a-b253-a3f7dafaf4bb',
@@ -78,8 +78,8 @@ describe('lambda function', () => {
         phone: '1234567893',
         lifetime_value: 4000,
         stage: 'customer',
-        updated_at: new Date('2022-12-14T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-14T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[4]).toEqual({
         id: '17a1b072-684c-4241-a7da-0e00702a2785',
@@ -92,8 +92,8 @@ describe('lambda function', () => {
         phone: '1234567894',
         lifetime_value: 5000,
         stage: 'lead',
-        updated_at: new Date('2022-12-13T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-13T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
     }
 
@@ -130,8 +130,8 @@ describe('lambda function', () => {
         phone: '1234567895',
         lifetime_value: 6000,
         stage: 'customer',
-        updated_at: new Date('2022-12-12T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-12T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[1]).toEqual({
         id: 'f305fe28-31d2-40cc-aba6-2f439bba94ca',
@@ -144,8 +144,8 @@ describe('lambda function', () => {
         phone: '1234567896',
         lifetime_value: 7000,
         stage: 'lead',
-        updated_at: new Date('2022-12-11T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-11T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[2]).toEqual({
         id: 'c727e217-9244-410d-8493-8c289b371aaf',
@@ -158,8 +158,8 @@ describe('lambda function', () => {
         phone: '1234567897',
         lifetime_value: 8000,
         stage: 'customer',
-        updated_at: new Date('2022-12-10T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-10T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
       expect(res.data[3]).toEqual({
         id: '958cd0a4-ff79-4c9d-9f16-0d02abf91f67',
@@ -172,8 +172,8 @@ describe('lambda function', () => {
         phone: '1234567898',
         lifetime_value: 9000,
         stage: 'lead',
-        updated_at: new Date('2022-12-09T12:34:56.789Z').toJSON(),
-        created_at: new Date('2022-12-01T12:34:56.789Z').toJSON()
+        updated_at: new Date('2022-12-09T12:34:56.789Z'),
+        created_at: new Date('2022-12-01T12:34:56.789Z')
       })
     }
 
