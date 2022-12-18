@@ -15,9 +15,8 @@ exports.handler = async (request, context, callback) => {
   let query
 
   try {
-    console.log(input)
     switch (true) {
-      case (!!input.visitor_id === true):
+      case !!input.visitor_id:
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
@@ -28,21 +27,21 @@ exports.handler = async (request, context, callback) => {
         `
         values.push(input.visitor_id)
         break
-      case (input.email):
+      case !!input.email:
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1 AND email = $2;
         `
         values.push(input.email)
         break
-      case input.phone:
+      case !!input.phone:
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1 AND phone = $2;
         `
         values.push(input.phone)
         break
-      case (input.name && input.ip_address):
+      case (!!input.name && !!input.ip_address):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
@@ -54,7 +53,7 @@ exports.handler = async (request, context, callback) => {
         `
         values.push(input.name, input.ip_address)
         break
-      case (input.first_name && input.last_name && input.ip_address):
+      case (!!input.first_name && !!input.last_name && !!input.ip_address):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
@@ -68,13 +67,11 @@ exports.handler = async (request, context, callback) => {
         values.push(input.first_name, input.last_name, input.ip_address)
         break
       default:
-        console.log('all nope')
         break
     }
-    console.log(query)
 
     if (query) {
-      const result = await pool.query(query, [workspace_id, ...values])
+      const result = await pool.query(query, [input.workspace_id, ...values])
 
       if (result.rows.length) {
         callback(null, {
