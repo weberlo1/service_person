@@ -15,6 +15,7 @@ exports.handler = async (request, context, callback) => {
   let query
 
   try {
+    console.log(input)
     switch (true) {
       case (input.visitor_id):
         query = `
