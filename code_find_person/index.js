@@ -22,7 +22,7 @@ exports.handler = async (request, context, callback) => {
           WHERE workspace_id = $1
           AND id IN (
             SELECT person_id FROM visitors
-            WHERE visitor_id = $2 AND workspace_id = $1
+            WHERE id = $2 AND workspace_id = $1
           );
         `
         values.push(input.visitor_id)

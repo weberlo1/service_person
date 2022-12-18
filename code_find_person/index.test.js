@@ -207,7 +207,7 @@ describe('lambda function', () => {
 
     const callback = (err, res) => {
       expect(res.code).toEqual(404)
-      expect(res.message).toEqual('not found')
+      expect(res.message).toEqual('person not found')
     }
 
     await handler(request, context, callback)
