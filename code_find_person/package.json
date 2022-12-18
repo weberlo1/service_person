@@ -17,9 +17,6 @@
   "author": "Andrey Kholkin",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.221.1",
-    "moment": "^2.24.0",
-    "slugid": "^3.0.0",
     "pg": "^8.5.1"
   }
 }

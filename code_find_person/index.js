@@ -12,38 +12,35 @@ exports.handler = async (request, context, callback) => {
   const client = await pool.connect()
   const { input } = request.arguments
   const values = []
+  let query
 
   try {
     switch (true) {
       case input.visitor_id:
-        query = 'SELECT * FROM people WHERE id IN (SELECT person_id FROM visitors WHERE visitor_id = $1)'
+        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND id IN (SELECT person_id FROM visitors WHERE visitor_id = $2 AND workspace_id = $1)'
         values.push(input.visitor_id)
         break
       case input.email:
-        query = 'SELECT * FROM people WHERE email_address = $1'
+        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND email = $2'
         values.push(input.email)
         break
       case input.phone:
-        query = 'SELECT * FROM people WHERE phone_number = $1'
+        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND phone = $2'
         values.push(input.phone)
         break
       case input.name && input.ip_address:
-        query = 'SELECT * FROM people WHERE (name = $1 AND ip_address = $2)'
+        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND name = $2 AND ip_address = $3'
         values.push(input.name, input.ip_address)
         break
-      case input.last_name && input.ip_address:
-        query = 'SELECT * FROM people WHERE (last_name = $1 AND ip_address = $1)'
-        values.push(input.last_name, input.ip_address)
-        break
-      case input.first_name && input.ip_address:
-        query = 'SELECT * FROM people WHERE (last_name = $1 AND ip_address = $2)'
-        values.push(input.last_name, input.ip_address)
+      case input.first_name && input.last_name && input.ip_address:
+        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND first_name = $2 AND last_name = $3 AND ip_address = $4'
+        values.push(input.first_name, input.last_name, input.ip_address)
         break
       default:
         break
     }
 
-    const result = await pool.query(query, values)
+    const result = await pool.query(query, [ workspace_id, ...values ])
 
     callback(null, {
       data: result.rows
