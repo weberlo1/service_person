@@ -8,7 +8,7 @@ exports.handler = async (request, context, callback) => {
     password: process.env.RDS_PW,
     port: process.env.RDS_PORT,
   })
-  
+
   const client = await pool.connect()
   const { input } = request.arguments
   const values = []
@@ -17,41 +17,85 @@ exports.handler = async (request, context, callback) => {
   try {
     switch (true) {
       case input.visitor_id:
-        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND id IN (SELECT person_id FROM visitors WHERE visitor_id = $2 AND workspace_id = $1)'
+        query = `
+          SELECT * FROM persons
+          WHERE workspace_id = $1
+          AND id IN (
+            SELECT person_id FROM visitors
+            WHERE visitor_id = $2 AND workspace_id = $1
+          )
+        `
         values.push(input.visitor_id)
         break
       case input.email:
-        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND email = $2'
+        query = `
+          SELECT * FROM persons
+          WHERE workspace_id = $1 AND email = $2
+        `
         values.push(input.email)
         break
       case input.phone:
-        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND phone = $2'
+        query = `
+          SELECT * FROM persons
+          WHERE workspace_id = $1 AND phone = $2
+        `
         values.push(input.phone)
         break
       case input.name && input.ip_address:
-        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND name = $2 AND ip_address = $3'
+        query = `
+          SELECT * FROM persons
+          WHERE workspace_id = $1
+          AND name = $2
+          AND id IN (
+            SELECT person_id FROM visitors
+            WHERE ip_address = $3 AND workspace_id = $1
+          )
+        `
         values.push(input.name, input.ip_address)
         break
       case input.first_name && input.last_name && input.ip_address:
-        query = 'SELECT * FROM persons WHERE workspace_id = $1 AND first_name = $2 AND last_name = $3 AND ip_address = $4'
+        query = `
+          SELECT * FROM persons
+          WHERE workspace_id = $1
+          AND first_name = $2
+          AND last_name = $3
+          AND id IN (
+            SELECT person_id FROM visitors
+            WHERE ip_address = $4 AND workspace_id = $1
+          )
+        `
         values.push(input.first_name, input.last_name, input.ip_address)
         break
       default:
         break
     }
 
-    const result = await pool.query(query, [ workspace_id, ...values ])
+    if (query) {
+      const result = await pool.query(query, [workspace_id, ...values])
 
-    callback(null, {
-      data: result.rows
-    })
-
+      if (result.rows.length) {
+        callback(null, {
+          code: 200,
+          message: 'person found',
+          data: result.rows,
+        })
+      } else {
+        callback(null, {
+          code: 404,
+          message: 'person not found',
+        })
+      }
+    } else {
+      callback(null, {
+        code: 400,
+        message: 'not enough info',
+      })
+    }
   } catch (e) {
     callback(e, {
-      status: 'ERROR',
-      message: 'Something went wrong!!'
+      code: 500,
+      message: 'internal server error',
     })
-
   } finally {
     client.release()
   }
