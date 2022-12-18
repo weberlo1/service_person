@@ -17,7 +17,7 @@ exports.handler = async (request, context, callback) => {
   try {
     console.log(input)
     switch (true) {
-      case (input.visitor_id):
+      case (!!input.visitor_id === true):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
