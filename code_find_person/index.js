@@ -16,7 +16,7 @@ exports.handler = async (request, context, callback) => {
 
   try {
     switch (true) {
-      case input.visitor_id:
+      case (input.visitor_id):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
@@ -27,7 +27,7 @@ exports.handler = async (request, context, callback) => {
         `
         values.push(input.visitor_id)
         break
-      case input.email:
+      case (input.email):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1 AND email = $2;
@@ -41,7 +41,7 @@ exports.handler = async (request, context, callback) => {
         `
         values.push(input.phone)
         break
-      case input.name && input.ip_address:
+      case (input.name && input.ip_address):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
@@ -53,7 +53,7 @@ exports.handler = async (request, context, callback) => {
         `
         values.push(input.name, input.ip_address)
         break
-      case input.first_name && input.last_name && input.ip_address:
+      case (input.first_name && input.last_name && input.ip_address):
         query = `
           SELECT * FROM persons
           WHERE workspace_id = $1
