@@ -68,8 +68,10 @@ exports.handler = async (request, context, callback) => {
         values.push(input.first_name, input.last_name, input.ip_address)
         break
       default:
+        console.log('all nope')
         break
     }
+    console.log(query)
 
     if (query) {
       const result = await pool.query(query, [workspace_id, ...values])
