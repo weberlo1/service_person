@@ -1,0 +1,519 @@
+openapi: 3.0.2
+info:
+  title: Person API
+  description: Manage people
+  version: 1.0.0
+servers:
+  - url: https://example.com/api
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+  x-amazon-apigateway-integration:
+    responses:
+      default:
+        statusCode: 200
+        responseTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            {
+              "statusCode": $inputRoot.code,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "message": $inputRoot.message,
+                "data": $inputRoot.data
+              }
+            }
+  securitySchemes:
+    EndpointAuthorizer:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        type: cognito_user_pools
+        providerARNs:
+          - arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/eu-west-1_mcMWLWkbH
+channels:
+  /person/{workspaceId}:
+    subscribe:
+      summary: Subscribe to updates for a list of people
+      operationId: subscribeToPerson
+      x-amazon-apigateway-websocket-route-key: $request.path.workspaceId
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+paths:
+  /person:
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+        - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: |
+            {
+              "statusCode" : 200
+            }
+        responses:
+          default:
+            statusCode: '200'
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+    get:
+      security:
+        - EndpointAuthorizer: []
+      x-amazon-apigateway-integration:
+        uri: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:service_person_get/invocations
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: 'when_no_match'
+        httpMethod: 'GET'
+        contentHandling: 'CONVERT_TO_TEXT'
+        type: 'aws_proxy'
+      summary: Get a person
+      operationId: getPerson
+      requestBody:
+        required: true
+        x-amazon-apigateway-request-validator: validate-request-body
+        x-amazon-apigateway-integration:
+          requestTemplates:
+            application/json: |
+              {
+                "input": {
+                  "id": $util.parseJson($input.body).id,
+                  "workspace_id": $util.parseJson($input.body).workspace_id
+                }
+              }
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - workspace_id
+              properties:
+                id:
+                  type: string
+                  pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                  description: UUID of the person to find
+                workspace_id:
+                  type: string
+                  pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                  description: UUID of the workspace to search
+      responses:
+        200:
+          description: Person found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Person data
+                    properties:
+                      id:
+                        type: string
+                      workspace_id:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      country_code:
+                        type: string
+                      phone:
+                        type: string
+                      lifetime_value:
+                        type: integer
+                      stage:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+        404:
+          description: Person not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+          $ref: '#/components/x-amazon-apigateway-integration'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      security:
+        - EndpointAuthorizer: []
+      x-amazon-apigateway-integration:
+        uri: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:service_person_add/invocations
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: 'when_no_match'
+        httpMethod: 'POST'
+        contentHandling: 'CONVERT_TO_TEXT'
+        type: 'aws_proxy'
+      summary: Add a new person to the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - workspace_id
+                - first_name
+                - last_name
+                - name
+                - email
+                - country_code
+                - phone
+                - lifetime_value
+                - stage
+              properties:
+                workspace_id:
+                  type: string
+                  format: uuid
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                country_code:
+                  type: string
+                phone:
+                  type: string
+                lifetime_value:
+                  type: integer
+                stage:
+                  type: string
+      responses:
+        '200':
+          description: Person added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Person data
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      workspace_id:
+                        type: string
+                        format: uuid
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      country_code:
+                        type: string
+                      phone:
+                        type: string
+                      lifetime_value:
+                        type: integer
+                      stage:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+        '400':
+          description: Person already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      security:
+          - EndpointAuthorizer: []
+      x-amazon-apigateway-integration:
+        uri: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:service_person_delete/invocations
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: 'when_no_match'
+        httpMethod: 'DELETE'
+        contentHandling: 'CONVERT_TO_TEXT'
+        type: 'aws_proxy'
+      summary: Delete a person from the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - workspace_id
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                workspace_id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Person deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Person data
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      workspace_id:
+                        type: string
+                        format: uuid
+        '400':
+          description: Person does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /person/find:
+    get:
+      security:
+        - EndpointAuthorizer: []
+      x-amazon-apigateway-integration:
+        uri: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:service_person_find/invocations
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: 'when_no_match'
+        httpMethod: 'GET'
+        contentHandling: 'CONVERT_TO_TEXT'
+        type: 'aws_proxy'
+      summary: Search for a person by visitor ID, email, phone, name and IP address, or first and last name and IP address.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - workspace_id
+              properties:
+                workspace_id:
+                  type: uuid
+                  description: The ID of the workspace to search in.
+                visitor_id:
+                  type: uuid
+                  description: The ID of the visitor to search for.
+                email:
+                  type: string
+                  description: The email address of the person to search for.
+                phone:
+                  type: string
+                  description: The phone number of the person to search for.
+                name:
+                  type: string
+                  description: The full name of the person to search for.
+                ip_address:
+                  type: string
+                  description: The IP address of the person to search for.
+                first_name:
+                  type: string
+                  description: The first name of the person to search for.
+                last_name:
+                  type: string
+                  description: The last name of the person to search for.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: An array of persons matching the search criteria.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: uuid
+                          description: The ID of the person.
+                        workspace_id:
+                          type: uuid
+                          description: The ID of the workspace the person belongs to.
+                        first_name:
+                          type: string
+                          description: The first name of the person.
+                        last_name:
+                          type: string
+                          description: The last name of the person.
+                        email:
+                          type: string
+                          description: The email address of the person.
+                        phone:
+                          type: string
+                          description: The phone number of the person.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  # /person/list:
+  #   get:
+  #     security:
+  #       - EndpointAuthorizer: []
+  #     x-amazon-apigateway-integration:
+  #       uri: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:service_person_list/invocations
+  #       responses:
+  #         default:
+  #           statusCode: '200'
+  #       passthroughBehavior: 'when_no_match'
+  #       httpMethod: 'GET'
+  #       contentHandling: 'CONVERT_TO_TEXT'
+  #       type: 'aws_proxy'
+  #     summary: Retrieve a list of persons
+  #     operationId: getPersonList
+  #     parameters:
+  #       - name: limit
+  #         in: query
+  #         description: Maximum number of persons to return (default: 10, max: 100)
+  #         schema:
+  #           type: integer
+  #       - name: offset
+  #         in: query
+  #         description: Number of persons to skip (default: 0, max: 1000)
+  #         schema:
+  #           type: integer
+  #       - name: workspace_id
+  #         in: query
+  #         description: ID of the workspace to filter by
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 limit:
+  #                   type: integer
+  #                   description: Maximum number of persons returned
+  #                 offset:
+  #                   type: integer
+  #                   description: Number of persons skipped
+  #                 data:
+  #                   type: array
+  #                   items:
+  #                     type: object
+  #                     properties:
+  #                       id:
+  #                         type: integer
+  #                         description: ID of the person
+  #                       name:
+  #                         type: string
+  #                         description: Name of the person
+  #                       workspace_id:
+  #                         type: string
+  #                         description: ID of the workspace the person belongs to
+  #                       created_at:
+  #                         type: string
+  #                         format: date-time
+  #                         description: Date and time when the person was created
+  #                       updated_at:
+  #                         type: string
+  #                         format: date-time
+  #                         description: Date and time when the person was last updated
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Response'
