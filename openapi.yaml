@@ -43,18 +43,6 @@ components:
         type: cognito_user_pools
         providerARNs:
           - arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/eu-west-1_mcMWLWkbH
-channels:
-  /person/{workspaceId}:
-    subscribe:
-      summary: Subscribe to updates for a list of people
-      operationId: subscribeToPerson
-      x-amazon-apigateway-websocket-route-key: $request.path.workspaceId
-      parameters:
-        - name: workspaceId
-          in: path
-          required: true
-          schema:
-            type: string
 paths:
   /person:
     options:
