@@ -6,24 +6,24 @@ jobs:
   test-add-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
-      pathname: ./code_add_person
+      pathname: ./functions/add_person
   
   test-delete-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
-      pathname: ./code_delete_person
+      pathname: ./functions/delete_person
 
   test-find-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
-      pathname: ./code_find_person
+      pathname: ./functions/find_person
 
   test-get-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
-      pathname: ./code_get_person
+      pathname: ./functions/get_person
 
   test-list-person:
     uses: weberlo1/reusable_workflows/.github/workflows/test_sql.yaml@dev
     with:
-      pathname: ./code_list_person
+      pathname: ./functions/list_person
