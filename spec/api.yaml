@@ -4,7 +4,12 @@ info:
   description: Manage people
   version: 1.0.0
 servers:
-  - url: https://example.com/api
+  - url: https://weberlo.com/api
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+x-amazon-apigateway-request-validator: all
 components:
   schemas:
     Response:
@@ -42,7 +47,7 @@ components:
       x-amazon-apigateway-authorizer:
         type: cognito_user_pools
         providerARNs:
-          - arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/eu-west-1_mcMWLWkbH
+          - arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:${cognito_user_pool_id}
 paths:
   /person:
     options:
@@ -103,10 +108,8 @@ paths:
           requestTemplates:
             application/json: |
               {
-                "input": {
-                  "id": $util.parseJson($input.body).id,
-                  "workspace_id": $util.parseJson($input.body).workspace_id
-                }
+                "workspace_id": "$input.params('workspace_id')",
+                "id": "$input.params('id')"
               }
         content:
           application/json:
@@ -175,6 +178,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response'
+          $ref: '#/components/x-amazon-apigateway-integration'
     post:
       security:
         - EndpointAuthorizer: []

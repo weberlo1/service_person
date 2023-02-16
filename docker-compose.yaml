@@ -19,7 +19,7 @@ services:
     volumes:
       - .:/app
   nodejs:
-    image: node:14-alpine
+    image: node:16-alpine
     depends_on:
       postgres:
         condition: service_healthy
@@ -32,3 +32,9 @@ services:
       POSTGRES_PASSWORD: pg_test
     volumes:
       - .:/app
+  imposter:
+    image: outofcoffee/imposter-openapi
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./spec:/opt/imposter/config"
